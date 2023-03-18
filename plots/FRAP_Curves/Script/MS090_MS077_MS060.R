@@ -44,12 +44,12 @@ loadData <- function (nameCond, dirCond){
   return(DataList)
 }
 
-# cbind function with NA if different size
-cbind.fill <- function(...) {                                                                                                                                                       
-  transpoted <- lapply(list(...),t)                                                                                                                                                 
-  transpoted_dataframe <- lapply(transpoted, as.data.frame)                                                                                                                         
-  return (data.frame(t(rbind.fill(transpoted_dataframe))))                                                                                                                          
-} 
+# # cbind function with NA if different size
+# cbind.fill <- function(...) {                                                                                                                                                       
+#   transpoted <- lapply(list(...),t)                                                                                                                                                 
+#   transpoted_dataframe <- lapply(transpoted, as.data.frame)                                                                                                                         
+#   return (data.frame(t(rbind.fill(transpoted_dataframe))))                                                                                                                          
+# } 
 
 #.--------------------------------------------------------.
 # Main function ----
@@ -96,13 +96,19 @@ load_and_process_data <- function(nameCond, myColours, myLines, suffix, err) {
       Datacondfiletemp <- get(paste("DataCond", loopcondition, "file", i,  sep = ""))
       Nbcell <- ncol(Datacondfiletemp)-3
       
-      # Do a big data frame with all normalised cells
+      # Do a big data frame with all normalised cells - set limit on number of rows to equal timestamps
       for (j in 0:(Nbcell-1)) { #loop through each cell
         meancelltemp <- select(Datacondfiletemp, paste("Mean.cell_",j,".", sep = "")) #use dplyr to select directly a column named xx
         backgroundtemp <- select(Datacondfiletemp, "Mean.Background.")
         
         Normalisedcelltemp <- (meancelltemp - backgroundtemp) / (meancelltemp[nbptsBeforeBleach,] - backgroundtemp[nbptsBeforeBleach,])
         colnames(Normalisedcelltemp)[1] <- paste("Norm_cond", loopcondition, "_file", i, "_cell", j, sep = "")
+        if(nrow(Normalisedcelltemp) > nrow(Timestamps)) {
+          Normalisedcelltemp <- as.data.frame(Normalisedcelltemp[1:nrow(Timestamps),])
+        }
+        if(nrow(Normalisedcelltemp) < nrow(Timestamps)) {
+          Normalisedcelltemp <- as.data.frame(rbind(Normalisedcelltemp[1,],rep(NA,nrow(Timestamps) - nrow(Timestamps))))
+        }
         Normalisedcells <- cbind(Normalisedcells, Normalisedcelltemp)
       }
     }
@@ -120,12 +126,14 @@ load_and_process_data <- function(nameCond, myColours, myLines, suffix, err) {
     # Plot on graph by condition
     plotConditiontemp <- ggplot(Normalisedcells_tidy, aes(x = time , y = value, color = name)) +
       geom_path() +
-      labs(x = "Time(s)", y = "Relative intensity", title = "Allplots", subtitle = nameCond[loopcondition],caption = "Normalised" ) +
+      labs(x = "Time(s)", y = "Relative intensity", title = "Allplots", subtitle = nameCond[loopcondition]) +
+      lims(y = c(0,1.2)) +
+      theme_cowplot(8) +
       theme(legend.position = "none")
     
     
     # save last plot
-    ggsave(paste0("FRAP_Ranalysis_allCells",suffix,"_",safeNameCond[loopcondition],".pdf"), plotConditiontemp, path = "Output/Plots", width = 12, height = 8  , units = "cm",  bg = NULL)
+    ggsave(paste0("FRAP_Ranalysis_allCells",suffix,"_",safeNameCond[loopcondition],".pdf"), plotConditiontemp, path = "Output/Plots", width = 6, height = 4, units = "cm",  bg = NULL)
     
   }
   
@@ -370,14 +378,14 @@ load_and_process_data <- function(nameCond, myColours, myLines, suffix, err) {
     scale_linetype_manual(values = myLines) +
     lims(y = c(0,1.2)) +
     labs(x = "Time (s)", y = "Relative intensity") +
-    theme_cowplot(9) +
+    theme_cowplot(8) +
     theme(legend.position = c(0.8,0.2))
   
   # summarydf <- data.frame(tau = TauCond$Tau,
   #                         cond = nameCond,
   #                         halftime = log(2) * TauCond$Tau)
   
-  ggsave(paste0("FRAP_R_Averages", suffix,".pdf"), p1, path = "Output/Plots", width = 6, height = 4, units = "cm",  bg = NULL)
+  ggsave(paste0("FRAP_R_Averages", suffix,".pdf"), p1, path = "Output/Plots", width = 5, height = 3.3, units = "cm",  bg = NULL)
 }
 
 #.--------------------------------------------------------.
@@ -404,9 +412,16 @@ load_and_process_data(nameCond = c("BeforeNoco","AfterNoco"),
                       suffix = "_noco",
                       err = "sem")
 
-## this is nocodazole treatment
+## this is ATP depletion
 load_and_process_data(nameCond = c("BeforeATPdepl","AfterATPdepl"),
                       myColours = c("#117733","#aa4499"),
                       myLines = c(1,1),
                       suffix = "_atp",
+                      err = "sem")
+
+## 25% PEG and washout
+load_and_process_data(nameCond = c("GFP woPEG","GFP PEG25","GFP PEG25washout"),
+                      myColours = c("#88ccee","#4477aa","#4477aa"),
+                      myLines = c(1,2,3),
+                      suffix = "_wash",
                       err = "sem")
