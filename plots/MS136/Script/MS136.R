@@ -361,7 +361,7 @@ plotsForPaper <- function(nameCond, myColours, myLines, suffix, err) {
   # ggplot for paper - legend is placed inside small plot - needs editing
   
   p1 <- ggplot() +
-    geom_point(data = AverageNormCondtoplot, aes(x = time , y = value, colour = name), alpha = 0.5, size = 0.4, shape = 16)
+    geom_line(data = AverageNormCondtoplot, aes(x = time , y = value, colour = name), alpha = 0.5, linewidth = 0.5)
   
   if(err == "sd") {
     p1 <-p1 + geom_ribbon(data = AverageNormCondtoplot, aes(x = time , ymin = value - sdNormCondtoplot$value, ymax = value + sdNormCondtoplot$value, fill = sdNormCondtoplot$name), alpha = 0.5)
@@ -386,7 +386,7 @@ plotsForPaper <- function(nameCond, myColours, myLines, suffix, err) {
   for(i in 1:length(nameCond)) {
     plotdata <- filter(dataNormCondtoplot, Cond == nameCond[i])
     p2 <- ggplot() +
-      geom_point(data = plotdata, aes(x = time , y = value), colour = myColours[i], alpha = 0.5, size = 0.4, shape = 16)
+      geom_line(data = plotdata, aes(x = time , y = value), colour = myColours[i], alpha = 0.5, linewidth = 0.5)
     
     if(err == "sd") {
       p2 <- p2 + geom_ribbon(data = plotdata, aes(x = time, ymin = value - sd, ymax = value + sd), fill = myColours[i], alpha = 0.5)
@@ -410,9 +410,15 @@ plotsForPaper <- function(nameCond, myColours, myLines, suffix, err) {
 # To generate plots ----
 plotsForPaper(nameCond = c("R159E","WT"),
              myColours = c("#999933","#117733"),
-             myLines = c(1,1),
+             myLines = c(5,5),
              suffix = "_Mitotrap",
              err = "sem")
+
+plotsForPaper(nameCond = c("R159E","WT"),
+              myColours = c("#117733","#117733"),
+              myLines = c(5,5),
+              suffix = "_MitotrapAlt",
+              err = "sem")
 
 
 

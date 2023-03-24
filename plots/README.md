@@ -2,6 +2,7 @@
 
 The following plots can be recreated:
 
+- Relocalization kinetics `MS137`
 - FRAP fitting and plots `FRAP_Curves`
 	- GFP, WT, R159E ± PEG `MS090`
 	- WT ± nocodazole `MS077`

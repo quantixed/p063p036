@@ -365,16 +365,17 @@ load_and_process_data <- function(nameCond, myColours, myLines, suffix, err) {
   # ggplot for paper - legend is placed inside small plot - needs editing
   
   p1 <- ggplot() +
-    geom_point(data = AverageNormCondtoplot, aes(x = time , y = value, colour = name), alpha = 0.5, size = 0.4, shape = 16)
+    geom_line(data = AverageNormCondtoplot, aes(x = time , y = value, colour = name), alpha = 0.5)
   
   if(err == "sd") {
-    p1 <-p1 + geom_errorbar(data = AverageNormCondtoplot, aes(x = time , ymin = value - sdNormCondtoplot$value, ymax = value + sdNormCondtoplot$value, colour = sdNormCondtoplot$name), alpha = 0.5, linewidth = 0.4, width = 0)
+    p1 <- p1 + geom_ribbon(data = AverageNormCondtoplot, aes(x = time , ymin = value - sdNormCondtoplot$value, ymax = value + sdNormCondtoplot$value, fill = sdNormCondtoplot$name), alpha = 0.5)
   } else {
-    p1 <- p1 +  geom_errorbar(data = AverageNormCondtoplot, aes(x = time , ymin = value - semNormCondtoplot$value, ymax = value + semNormCondtoplot$value, colour = sdNormCondtoplot$name), alpha = 0.5, linewidth = 0.4, width = 0)
+    p1 <- p1 +  geom_ribbon(data = AverageNormCondtoplot, aes(x = time , ymin = value - semNormCondtoplot$value, ymax = value + semNormCondtoplot$value, fill = sdNormCondtoplot$name), alpha = 0.5)
   }
   
   p1 <- p1 + geom_line(data = Simplefittoplot, aes(x = Time, y = value, colour = name, linetype = name)) +
     scale_color_manual(values = myColours) +
+    scale_fill_manual(values = myColours) +
     scale_linetype_manual(values = myLines) +
     lims(y = c(0,1.2)) +
     labs(x = "Time (s)", y = "Relative intensity") +
@@ -401,27 +402,27 @@ load_and_process_data(nameCond = c("GFP woPEG", "TPD54WT woPEG", "TPD54mut woPEG
 ## this is the different concentrations of PEG (2nd plot)
 load_and_process_data(nameCond = c("TPD54wt woPEG","TPD54wt PEG6","TPD54wt PEG12","TPD54mut woPEG","TPD54mut PEG6","TPD54mut PEG12"),
                       myColours = c(rep("#117733",3),rep("#999933",3)),
-                      myLines = c(1,2,3,1,2,3),
+                      myLines = c(5,2,3,5,2,3),
                       suffix = "_PEG",
                       err = "sem")
 
 ## this is nocodazole treatment
 load_and_process_data(nameCond = c("BeforeNoco","AfterNoco"),
                       myColours = c("#117733","#aa4499"),
-                      myLines = c(1,1),
+                      myLines = c(5,5),
                       suffix = "_noco",
                       err = "sem")
 
 ## this is ATP depletion
 load_and_process_data(nameCond = c("BeforeATPdepl","AfterATPdepl"),
                       myColours = c("#117733","#aa4499"),
-                      myLines = c(1,1),
+                      myLines = c(5,5),
                       suffix = "_atp",
                       err = "sem")
 
 ## 25% PEG and washout
 load_and_process_data(nameCond = c("GFP woPEG","GFP PEG25","GFP PEG25washout"),
                       myColours = c("#88ccee","#4477aa","#4477aa"),
-                      myLines = c(1,2,3),
+                      myLines = c(5,2,3),
                       suffix = "_wash",
                       err = "sem")
