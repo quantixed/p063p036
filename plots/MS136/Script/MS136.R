@@ -351,6 +351,9 @@ plotaverages
 
 # Plot Steve's style for paper ----
 
+# hack function for 1dp axis tick labels
+scaleFUN <- function(x) sprintf("%.1f", x)
+
 plotsForPaper <- function(nameCond, myColours, myLines, suffix, err) {
   
   # save important df 
@@ -398,6 +401,7 @@ plotsForPaper <- function(nameCond, myColours, myLines, suffix, err) {
       scale_color_manual(values = myColours) +
       scale_fill_manual(values = myColours) +
       scale_linetype_manual(values = myLines) +
+      scale_y_continuous(labels = scaleFUN) +
       labs(x = "Time (s)", y = "Relative intensity") +
       theme_cowplot(8) +
       theme(legend.position = c(0.8,0.2))
@@ -413,12 +417,6 @@ plotsForPaper(nameCond = c("R159E","WT"),
              myLines = c(5,5),
              suffix = "_Mitotrap",
              err = "sem")
-
-plotsForPaper(nameCond = c("R159E","WT"),
-              myColours = c("#117733","#117733"),
-              myLines = c(5,5),
-              suffix = "_MitotrapAlt",
-              err = "sem")
 
 
 
