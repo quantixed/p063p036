@@ -395,7 +395,7 @@ load_and_process_data <- function(nameCond, myColours, myLines, suffix, err) {
 ## this is the different concentrations of the zero PEG condition (1st plot)
 load_and_process_data(nameCond = c("GFP woPEG", "TPD54WT woPEG", "TPD54mut woPEG"),
                       myColours = c("#88ccee", "#117733", "#999933"),
-                      myLines = c(1,1,1),
+                      myLines = c(5,5,5),
                       suffix = "_noPEG",
                       err = "sem")
 
