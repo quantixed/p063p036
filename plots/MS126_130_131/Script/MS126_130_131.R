@@ -7,6 +7,9 @@ library(cowplot)
 xlfilepath <- list.files("Data","*.xlsx", full.names = TRUE)
 Pool <- read_excel(xlfilepath[1])
 
+# NbEventsperArea is for 20 s, multiply by 3 for per min
+Pool$NbEventsperArea <- Pool$NbEventsperArea * 3
+
 # superplot 
 DFsummary <- Pool %>% 
   group_by(SimpleCond, Experiment) %>%
@@ -34,7 +37,7 @@ p1 <- ggplot(DFpool, aes(x = factor(SimpleCond, Condnamelevel))) +
   geom_point(data = DFsummary, aes(y = mean), size = 2, shape = 0, colour= "black") +  #contour mean value
   geom_line(data = DFsummary, aes( y = mean, colour = Experiment, group = Experiment)) +   #for paired data
   scale_color_manual(values = c("#44aa99", "#117733", "#999933")) +
-  scale_y_continuous(limits = c(0,NA), breaks = c(0,0.05,0.1)) +
+  scale_y_continuous(limits = c(0,NA)) +
   labs(y = "NbEvents/um2", x = "") +
   theme_cowplot(9) +
   theme(legend.position = "none")
@@ -44,7 +47,4 @@ p1 <- ggplot(DFpool, aes(x = factor(SimpleCond, Condnamelevel))) +
 p1 
 
 ggsave ("Pool_NbExocytosisEvents.pdf", p1, path = "Output/Plots", width = 3.5, height = 4 , units = "cm" ,  bg = NULL)
-
-#Save Script itself
-#file.copy(sys.frame(1)$ofile, to = file.path(path, paste0("Superplot_codeR_",Sys.Date(), ".R")), overwrite =  TRUE)
 
