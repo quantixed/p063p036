@@ -1,0 +1,2 @@
+Mean confindence,Drift x,Drift y,Omitted segments,Min. track length,Window size,Min. segment length,Resamplerate,Pixelsize,Framerate,Reduced conf. model,Remove global drift
+0.616,4.831E-4,8.052E-6,5,10,10,10,1,0.040,17,false,false
