@@ -1,5 +1,5 @@
 # Package names
-packages <- c("ggplot2", "ggforce", "patchwork", "plyr", "dplyr", "tidyr", "cowplot")
+packages <- c("ggplot2", "ggforce", "patchwork", "plyr", "dplyr", "tidyr", "cowplot", "rstatix")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
@@ -263,3 +263,15 @@ write.csv(dfCondnoNA, paste("Output/Data/", "MS099_AllConditions_noNA.csv"), row
 write.csv(OccurenceClassCond, paste("Output/Data/", "MS099_OccurenceClassCond.csv"), row.names = FALSE)
 write.csv(FractionAboveThreeshold, paste("Output/Data/", "MS099_FractionAboveThreeshold.csv"), row.names = FALSE)
 write.csv(Fractioncount, paste("Output/Data/", "MS099_FractionAboveThreeshold_replicates.csv"), row.names = FALSE)
+
+
+# t-test on two groups
+statsTable <- Fractioncount
+statsTable$Treatment <- as.factor(statsTable$Treatment)
+statsTable$FracAboveThreeshold <- as.numeric(statsTable$FracAboveThreeshold)
+
+stat.test <- statsTable %>%
+  t_test(FracAboveThreeshold ~ Treatment) %>%
+  add_significance()
+
+stat.test
