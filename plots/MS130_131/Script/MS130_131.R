@@ -2,6 +2,7 @@ library(readxl)
 library(dplyr)
 library(ggbeeswarm)
 library(cowplot)
+library(rstatix)
 
 # Read csv
 xlfilepath <- list.files("Data","*.xlsx", full.names = TRUE)
@@ -38,12 +39,13 @@ p1 <- ggplot(DFpool, aes(x = factor(Cond, Condnamelevel))) +
   theme_cowplot(9) +
   theme(legend.position = "none")
 
-#theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-
 p1 
 
 ggsave ("Pool_Diffusion.pdf", p1, path = "Output/Plots", width = 3.5, height = 4  , units = "cm" ,  bg = NULL)
 
-#Save Script itself
-#file.copy(sys.frame(1)$ofile, to = file.path(path, paste0("Superplot_codeR_",Sys.Date(), ".R")), overwrite =  TRUE)
+# t-test on two groups
+stat_test <- DFpool %>%
+  t_test(DiffusionCoeff ~ Cond)
+
+stat_test
 

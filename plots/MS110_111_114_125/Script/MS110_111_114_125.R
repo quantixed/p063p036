@@ -1,7 +1,9 @@
 library(readxl)
 library(dplyr)
+library(stringr)
 library(ggbeeswarm)
 library(cowplot)
+library(rstatix)
 
 # Read csv
 xlfilepath <- list.files("Data","*.xlsx", full.names = TRUE)
@@ -38,12 +40,20 @@ p1 <- ggplot(DFpool, aes(x = factor(SimpleCond, Condnamelevel))) +
   theme_cowplot(9) +
   theme(legend.position = "none")
 
-#theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-
 p1 
 
 ggsave ("Pool_NbExocytosisEvents.pdf", p1, path = "Output/Plots", width = 7.5, height = 5.5  , units = "cm" ,  bg = NULL)
 
-#Save Script itself
-#file.copy(sys.frame(1)$ofile, to = file.path(path, paste0("Superplot_codeR_",Sys.Date(), ".R")), overwrite =  TRUE)
+# t-test on two groups
+stat_test_wt <- DFpool %>%
+  dplyr::filter(str_detect(SimpleCond,"^WT")) %>% 
+  t_test(NbEventsperArea ~ SimpleCond)
+
+stat_test_wt
+
+stat_test_mCh <- DFpool %>%
+  dplyr::filter(str_detect(SimpleCond,"^mCh")) %>% 
+  t_test(NbEventsperArea ~ SimpleCond)
+
+stat_test_mCh
 

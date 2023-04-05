@@ -2,6 +2,7 @@ library(readxl)
 library(dplyr)
 library(ggbeeswarm)
 library(cowplot)
+library(rstatix)
 
 # Read csv
 xlfilepath <- list.files("Data","*.xlsx", full.names = TRUE)
@@ -42,9 +43,17 @@ p1 <- ggplot(DFpool, aes(x = factor(SimpleCond, Condnamelevel))) +
   theme_cowplot(9) +
   theme(legend.position = "none")
 
-#theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-
-p1 
+p1
 
 ggsave ("Pool_NbExocytosisEvents.pdf", p1, path = "Output/Plots", width = 3.5, height = 4 , units = "cm" ,  bg = NULL)
 
+# t-test on two groups
+stat_test <- DFpool %>%
+  t_test(NbEventsperArea ~ SimpleCond)
+## each point is independent so this t-test is fine
+stat_test
+
+## comparison by experiment like this doesn't work because it would need normalisation per expt
+# DFsummary %>% 
+#   ungroup() %>% 
+#   t_test(mean ~ SimpleCond)
