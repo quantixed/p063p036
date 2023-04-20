@@ -8,8 +8,9 @@ The following plots can be recreated:
 	- GFP, WT, R159E ± PEG `MS090`
 	- WT ± nocodazole `MS077`
 	- WT ± ATP depl `MS060` 
-- Diffusion coefficient from FRAP - `MS055_060_131`
-- Exocytosis, relocalization of INVs - `MS110_111_114_125` 
+- Diffusion coefficient from FRAP `MS055_060_131`
+- FLIP fitting and plots `MS060`
+- Exocytosis, relocalization of INVs `MS110_111_114_125` 
 - Effect of PEG on exocytosis `MS104_105`
 - Diffusion coefficient from FRAP, control vs dongle `MS130_131`
 - Calculated diffusion `MS130_131`
