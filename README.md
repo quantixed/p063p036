@@ -14,7 +14,7 @@ For details, see the README in `plots/`
 For FLIP simulation, `DiffusionSim.ipf` is written for IGOR Pro.
 
 <details>
-	<summary>A GUI is available to guide simulations. Click for details</summary>
+	<summary>A GUI is available to guide simulations. Click for details...</summary>
 	
 <img src="img/VesiclePanel.png" width="300">
 
@@ -37,9 +37,24 @@ The bottom part of the panel allows the simulations to be automated by taking a 
 Particle movies were generated using `Particle_Simulation.ijm` in FIJI.
 TrackMate automation is via the groovy script `TrackMateAutomation.groovy`.
 The ground truth outputs can be evaluated in IGOR using `VesicleTracks.ipf`.
-Although not documented in the paper, this program will also display movies and tracking data in a neat widget for visualization.
-It will also select the most mobile of tracks using a few different algorithms.
-The TrackMate XML outputs can be analyzed using `TrackMateR`.
-R code to evaluate TrackMate XML files from these routines is available in `plots/SJR194/`
+Select *Macros > Vesicle Tracks Only* or *Macros > Vesicle Tracks Simple* and select the csv file of the ground truth data that you would like to evaluate.
+The "simple" workflow skips algorithmic comparison of tracks and other features which are not necessary for evaluating the ground truth data.
 
-Some IGOR procedure files require `PXPUtils.ipf` to run properly, available [here](https://github.com/quantixed/PXPUtils)
+<details>
+	<summary>Although not documented in the paper, `VesicleTracks.ipf` will also display movies and tracking data in a neat widget for visualization. Click for details...</summary>
+	
+<img src="img/VesicleTracks.png" width="400">
+
+To use this, select *Macros > Vesicle Tracks...* As an input it requires a csv file of tracks and an image.
+This is compatible with the outputs from `Particle_Simulation.ijm` but the display will show all particles in the volume.
+
+<img src="img/VesicleTracks.gif" width="302">
+
+The default view shows all particles. Click "show selected" to see the top most directed tracks according to the program. 
+
+</details>
+
+The TrackMate XML outputs can be analyzed using `TrackMateR`.
+R code to evaluate TrackMate XML files from these routines is available in `plots/SJR194/`.
+
+Some IGOR procedure files require `PXPUtils.ipf` to run properly, available [here](https://github.com/quantixed/PXPUtils).

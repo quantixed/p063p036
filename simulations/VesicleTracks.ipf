@@ -889,6 +889,8 @@ Function VesicleTracks_Panel()
 	SetVariable box1,pos={10,180},size={140,30},title="Pixel size (\u03BCm)",value=paramWave[1]
 	// specify depth
 	SetVariable box2,pos={10,200},size={140,30},title="Section depth (\u03BCm)",value=paramWave[2]
+	// flip image (msp has x and y switched, ground truth and trackmate do not) check this box if you get a mismatch
+	CheckBox xyOpt,pos={10,140},size={105,14},title="XY flip",value=0
 End
 
 // define buttons
@@ -897,11 +899,16 @@ Function MSPTrackerButtonProc(ba) : ButtonControl
 
 	Wave/T pathWave = root:pathWave
 	Wave paramWave = root:paramWave
-	Variable refnum
+	Variable refnum, xyFlip = 0
 	String filters, fileName
 
 	switch(ba.eventCode)
 		case 2:
+			ControlInfo/W=msptracker xyopt
+			if(V_Value)
+				xyflip = 1
+			endif
+			
 			if(CmpStr(ba.ctrlName,"csvSelect") == 0)
 				filters = "CSV File (*.csv):.csv;All Files:.*;"
 				Open/D/R/F=filters/M="Select csv file" refnum
@@ -910,8 +917,10 @@ Function MSPTrackerButtonProc(ba) : ButtonControl
 					return -1
 				else
 					pathWave[0] = fileName
+					pathWave[1] = ReplaceString(".csv",fileName,".tif")
 					return 0
 				endif
+			
 			elseif(CmpStr(ba.ctrlName,"tifSelect") == 0)
 				filters = "TIFF File (*.tif,*.tiff):.tif,.tiff;"
 				Open/D/R/F=filters/M="Select image" refnum
@@ -922,6 +931,7 @@ Function MSPTrackerButtonProc(ba) : ButtonControl
 					pathWave[1] = fileName
 					return 0
 				endif
+			
 			elseif(CmpStr(ba.ctrlName,"DoIt") == 0)
 				if(strlen(pathWave[0]) > 0 && strlen(pathWave[1]) > 0)
 					// load the csv file
@@ -929,6 +939,9 @@ Function MSPTrackerButtonProc(ba) : ButtonControl
 					// load the image
 					ImageLoad/T=tiff/O/S=0/C=-1/LR3D/Q/N=image pathWave[1]
 					WAVE/Z image
+					if(xyflip == 1)
+						ImageRotate/C/O image	
+					endif
 					paramWave[3] = DimSize(image,0) // width
 					paramWave[4] = DimSize(image,1) // height
 					KillWindow/Z MSPTracker
@@ -955,14 +968,16 @@ Function BuildMovieDisplay()
 	NewImage/N=$graphName/S=0 Image
 	ControlBar/W=$graphName 50
 	ModifyGraph/W=$graphName width={Aspect,1}
+	SetAxis/R/W=$graphName left paramWave[4]-0.5,-0.5
+	SetAxis/W=$graphName top -0.5,paramWave[4]-0.5
 	Slider sld, win=vtMovie,limits={0,DimSize(Image,2)-1,1},size={0.9*paramWave[3],20},vert=0,thumbcolor=(30840,50629,61423),proc=ActionProcName
 	// generate the waves for live display
 	MakeGappedWaves(0)
 	WAVE/Z liveXW,liveYW,liveXTrails,liveYTrails
-	AppendToGraph/T/W=$graphName liveXW/TN=spots vs liveYW // recall that X and Y are the other way around
+	AppendToGraph/T/W=$graphName liveYW/TN=spots vs liveXW // recall that X and Y are the other way around
 	ModifyGraph/W=$graphName mode(spots)=3,marker(spots)=8,msize(spots)=5,mrkThick(spots)=2
 	ModifyGraph/W=$graphName rgb(spots)=(65535,65535,0)
-	AppendToGraph/T/W=$graphName liveXTrails/TN=trails vs liveYTrails // recall that X and Y are the other way around
+	AppendToGraph/T/W=$graphName liveYTrails/TN=trails vs liveXTrails // recall that X and Y are the other way around
 	ModifyGraph/W=$graphName mode(trails)=0,lsize(trails)=2
 	ModifyGraph/W=$graphName rgb(trails)=(65535,26985,46260)
 	
