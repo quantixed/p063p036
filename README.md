@@ -1,11 +1,23 @@
 # p063p036
 
-Data and code for manuscript p063p036
+Code and data for Sittewelle et al. manuscript `#p063p036`
+
+**Passive diffusion accounts for the majority of intracellular vesicle transport**
+
+Méghane Sittewelle & Stephen J. Royle
+
+*bioRxiv* 2023. <!--[DOI: https://doi.org/zzz/zzz](https://doi.org/zzz/zzz)-->
 
 ## plots
 
 R code for plot recreation.
 For details, see the README in `plots/`
+
+- Several R scripts require **TrackMateR** to run.
+Stable release is [here](https://doi.org/10.5281/zenodo.7042948), development version is [here](https://github.com/quantixed/TrackMateR).
+- Some R scripts require TrackMate XML files to process data and generate plots.
+These files are available at [Zenodo](https://doi.org/10.5281/zenodo.7905013) together with some of the visualizations generated using TrackMateR.
+
 
 ## simulations
 
