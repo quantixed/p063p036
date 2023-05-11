@@ -6,7 +6,7 @@ Code and data for Sittewelle et al. manuscript `#p063p036`
 
 Méghane Sittewelle & Stephen J. Royle
 
-*bioRxiv* 2023. <!--[DOI: https://doi.org/zzz/zzz](https://doi.org/zzz/zzz)-->
+*bioRxiv* 2023. DOI: [hhttps://doi.org/10.1101/2023.05.10.540182](https://doi.org/10.1101/2023.05.10.540182)
 
 ## plots
 
