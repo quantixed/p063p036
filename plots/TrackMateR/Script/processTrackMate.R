@@ -1,7 +1,8 @@
 # Script which will first analyse all data using TrackMateR and then do PCA
+# The project on GitHub requires the TrackMate XML files from zenodo to be placed into Data/
 # The PCA part needs the file allTraceData.csv in Output/Data/ folder
 # Written by Stephen Royle & Meghane Sittewelle
-# Modified 31 March 2023
+# Modified 10 July 2023
 
 # Packages ----
 library(tidyverse)
@@ -26,8 +27,8 @@ alldf <- alldf[ , c("condition", names(alldf)[names(alldf) != "condition"])]
 # Run the PCA ----
 dfPCA <- alldf %>%
   unite("UniqID", "dataid", "trace", sep= "_", remove = FALSE)
-# remove redundant columns
-drops <- c("fraction")
+# remove redundant columns - expanded because in TrackMateR v 0.3.8 onwards more outputs are generated
+drops <- c("fraction", "dee", "estdee", "estsigma", "intensity")
 dfPCA <- dfPCA[ , !(names(dfPCA) %in% drops)]
 nbParamCols <- ncol(dfPCA) - 4
 
