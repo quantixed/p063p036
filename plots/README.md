@@ -13,7 +13,9 @@
 - Tracking StayGold-TPD54 INVs `MS124_126` (see below, use `MS124_126_single.R`)
 - Comparison of 12 markers using TrackMate `TrackMateR`
 	- requires XML files adding to `TrackMateR/Data/`
-	- PCA contour similarity and hierarchical clutsreing is done in Igor using `PCASimilarShapes.ipf`
+	- PCA contour similarity and hierarchical clustering is done in Igor using `PCASimilarShapes.ipf`
+	- Example Tracksets produced with `plotDatasetTracks.R`, requires output from `compareDatasets()`.
+	- Distibution of alpha values with `alphaHistograms.R`, requires output from `compareDatasets()`.
 - Exocytosis, relocalization of INVs `MS110_111_114_125` 
 - Effect of PEG on exocytosis `MS104_105`
 - Diffusion coefficient from FRAP, control vs dongle `MS130_131`
@@ -24,6 +26,6 @@
 
 - Evaluation of TrackMate using synthetic data `SJR194` (requires XML files adding to `SJR194/Data/`, these files are large and can be generated using the code in `../simulations`)
 - Comparison of StayGold-TPD54 pre and post bleach `MS124_126` (requires XML files adding to `MS124_126/Data/`)
-- PCA of all TrackMate data, outputs with `TrackMateR`
+- PCA of all TrackMate data, outputs with `TrackMateR`, n table production.
 
 TrackMate XML files are available as described in the main README.
