@@ -298,3 +298,12 @@ r_report <- (p_density + p_speed) / (p_alpha + p_msd)
 ggsave("Output/Plots/all_tm_plots.pdf", plot = r_report, width = 13, height = 8, units = "cm")
 # patchwork makes msd plot a bit weird. plot it separately.
 ggsave("Output/Plots/msd_only.pdf", plot = p_msd, width = 6.2, height = 3.8, units = "cm")
+
+ggplot(alldf, aes(x = intensity)) +
+  geom_histogram(binwidth = 8) +
+  facet_wrap(. ~ condition, scales = "free") +
+  lims(x = c(0,500)) +
+  labs(x = "Fluorescence intensity (AU)", y = "Frequency") +
+  theme_cowplot(9)
+# intensity plot for Supp Fig
+ggsave("Output/Plots/all_int.pdf", width = 16, height = 12, units = "cm")

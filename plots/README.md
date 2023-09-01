@@ -27,5 +27,6 @@
 - Evaluation of TrackMate using synthetic data `SJR194` (requires XML files adding to `SJR194/Data/`, these files are large and can be generated using the code in `../simulations`)
 - Comparison of StayGold-TPD54 pre and post bleach `MS124_126` (requires XML files adding to `MS124_126/Data/`)
 - PCA of all TrackMate data, outputs with `TrackMateR`, n table production.
+- Intensity distributions are generated with `TrackMateR`, `processTrackMate.R`
 
 TrackMate XML files are available as described in the main README.
