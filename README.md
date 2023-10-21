@@ -1,12 +1,12 @@
 # p063p036
 
-Code and data for Sittewelle et al. manuscript `#p063p036`
+Code and data for Sittewelle & Royle manuscript `#p063p036`
 
-**Passive diffusion accounts for the majority of intracellular vesicle transport**
+**Passive diffusion accounts for the majority of intracellular nanovesicle transport**
 
 Méghane Sittewelle & Stephen J. Royle
 
-*bioRxiv* 2023. DOI: [hhttps://doi.org/10.1101/2023.05.10.540182](https://doi.org/10.1101/2023.05.10.540182)
+*Life Sci Alliance* 2023. DOI: [hhttps://doi.org/10.26508/lsa.202302406](https://doi.org/10.26508/lsa.202302406)
 
 ## plots
 
